@@ -1,12 +1,15 @@
+/*
 package cz.uhk.fim.mygeoalarm;
 
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 
+*/
 /**
  * Created by Petr on 11. 5. 2015.
- */
+ *//*
+
 public class TabListener implements ActionBar.TabListener {
 
     private Fragment fragment;
@@ -30,3 +33,4 @@ public class TabListener implements ActionBar.TabListener {
 
     }
 }
+*/

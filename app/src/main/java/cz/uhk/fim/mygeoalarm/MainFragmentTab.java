@@ -10,11 +10,15 @@ import android.view.ViewGroup;
 /**
  * Created by Petr on 11. 5. 2015.
  */
-public class MainFragmentTab extends Fragment {
+public class MainFragmentTab extends android.support.v4.app.Fragment {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 }
