@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -33,15 +34,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        actionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_TITLE);
+        //actionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_HOME);
 
         actionBar.addTab(actionBar.newTab().setText("Home").setTabListener(this));
         actionBar.addTab(actionBar.newTab().setText("Destinations").setTabListener(this));
 
+
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
-
             }
 
             @Override
@@ -51,7 +52,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             @Override
             public void onPageScrollStateChanged(int i) {
-
             }
         });
 
@@ -60,23 +60,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_destination_list, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.add_destination:
+                Intent intent = new Intent(this, AddDestinationActivity.class);
+                startActivity(intent);
+                return true;
+            default: return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
