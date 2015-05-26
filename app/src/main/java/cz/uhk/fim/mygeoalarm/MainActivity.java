@@ -34,7 +34,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        //actionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_HOME);
+        actionBar.setDisplayOptions(0, ActionBar.DISPLAY_SHOW_HOME);
 
         actionBar.addTab(actionBar.newTab().setText("Home").setTabListener(this));
         actionBar.addTab(actionBar.newTab().setText("Destinations").setTabListener(this));

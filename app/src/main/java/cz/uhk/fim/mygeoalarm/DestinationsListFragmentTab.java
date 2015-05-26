@@ -1,11 +1,14 @@
 package cz.uhk.fim.mygeoalarm;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.ListFragment;
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,6 +29,7 @@ public class DestinationsListFragmentTab extends android.support.v4.app.ListFrag
     SimpleCursorAdapter mAdapter;
     ListView mList;
     SQLiteDatabase mDatabase;
+    //OnDestinationSelectedListener mCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -125,6 +129,34 @@ public class DestinationsListFragmentTab extends android.support.v4.app.ListFrag
 
 
         return v;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+     //   mCallback.OnDestinationSelected(position);
+
+        Long destinationID = mAdapter.getItemId(position);
+        String[] select = new String[] {Destinations._ID, Destinations.COLUMN_NAME_ACTIVE};
+
+        Cursor c = mDatabase.query(Destinations.TABLE_NAME, select, Destinations._ID + "=" + id, null, null, null, null );
+        Log.d("pred", "pred" + id);
+        int col = c.getColumnIndex("active");
+        c.moveToFirst();
+        Log.d("pred", "pred" + c.getCount() + " " + c.getColumnCount());
+
+        Long active = c.getLong(col);
+        ContentValues cv = new ContentValues();
+
+        if (active == 0) {
+            cv.put(Destinations.COLUMN_NAME_ACTIVE, 1);
+            Log.d("update", "1");
+        } else {
+            cv.put(Destinations.COLUMN_NAME_ACTIVE, 0);
+            Log.d("update", "0");
+        }
+
+        mDatabase.update(Destinations.TABLE_NAME, cv, Destinations._ID + " = " + id, null);
+        c.close();
     }
 
     @Override

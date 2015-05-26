@@ -9,12 +9,14 @@ public class Destination {
     private String name;
     private String coordinates;
     private float radius;
+    private int active;
 
-    public Destination(Long id, String name, String coordinates, float radius) {
+    public Destination(Long id, String name, String coordinates, float radius, int active) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
         this.radius = radius;
+        this.active = active;
     }
 
     public Long getId() {
@@ -47,5 +49,13 @@ public class Destination {
 
     public void setRadius(float radius) {
         this.radius = radius;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
     }
 }

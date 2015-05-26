@@ -13,14 +13,15 @@ public class DestinationDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TAG = DestinationDatabaseHelper.class.getCanonicalName();
     public static final String DATABASE_NAME = "destinationdatabase.db";
-    public static final int VERSION = 2;
+    public static final int VERSION = 3;
 
     public static final String SQL_CREATE_DESTINATION_TABLE =
             "CREATE TABLE " + Destinations.TABLE_NAME + " (" +
             Destinations._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             Destinations.COLUMN_NAME_NAME + " TEXT, " +
             Destinations.COLUMN_NAME_COORDINATES + " TEXT, " +
-            Destinations.COLUMN_NAME_RADIUS + " INTEGER)";
+            Destinations.COLUMN_NAME_RADIUS + " INTEGER, " +
+            Destinations.COLUMN_NAME_ACTIVE + " INTEGER)";
 
     public static final String SQL_DROP_DESTINATION_TABLE =
             "DROP TABLE IF EXISTS " + Destinations.TABLE_NAME;
@@ -50,16 +51,19 @@ public class DestinationDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(Destinations.COLUMN_NAME_NAME, "Hradec Králové");
         contentValues.put(Destinations.COLUMN_NAME_COORDINATES, "50.212121, 36.2132132");
         contentValues.put(Destinations.COLUMN_NAME_RADIUS, 1);
+        contentValues.put(Destinations.COLUMN_NAME_ACTIVE, 0);
         db.insert(Destinations.TABLE_NAME, null, contentValues);
 
         contentValues.put(Destinations.COLUMN_NAME_NAME, "Nove Mesto");
         contentValues.put(Destinations.COLUMN_NAME_COORDINATES, "50.212121, 39.2132132");
         contentValues.put(Destinations.COLUMN_NAME_RADIUS, 1);
+        contentValues.put(Destinations.COLUMN_NAME_ACTIVE, 0);
         db.insert(Destinations.TABLE_NAME, null, contentValues);
 
         contentValues.put(Destinations.COLUMN_NAME_NAME, "Nachod");
         contentValues.put(Destinations.COLUMN_NAME_COORDINATES, "50.212121, 32.2132132");
         contentValues.put(Destinations.COLUMN_NAME_RADIUS, 2);
+        contentValues.put(Destinations.COLUMN_NAME_ACTIVE, 0);
         db.insert(Destinations.TABLE_NAME, null, contentValues);
     }
 }
