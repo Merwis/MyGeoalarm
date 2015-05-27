@@ -29,7 +29,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         mViewPager.setId(R.id.pager);
         setContentView(mViewPager);
 
-        mFragmentPageAdapter = new FragmentPageAdapter(getSupportFragmentManager());
+        mFragmentPageAdapter = new FragmentPageAdapter(getSupportFragmentManager(), this.getApplicationContext());
         mViewPager.setAdapter(mFragmentPageAdapter);
 
         final ActionBar actionBar = getActionBar();
@@ -48,6 +48,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             @Override
             public void onPageSelected(int i) {
                 actionBar.setSelectedNavigationItem(i);
+
+                android.support.v4.app.Fragment fragment =
+                        ((FragmentPageAdapter)mViewPager.getAdapter()).getFragment(i);
+
+                if (i == 0 && fragment != null) {
+                    fragment.onResume();
+                }
             }
 
             @Override

@@ -10,4 +10,21 @@
         android:text="Hlavni obrazovka"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Aktivní destinace"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/destination_name"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/destination_radius"
+        />
+
+
 </LinearLayout>

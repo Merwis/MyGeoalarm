@@ -156,6 +156,8 @@ public class DestinationsListFragmentTab extends android.support.v4.app.ListFrag
         }
 
         mDatabase.update(Destinations.TABLE_NAME, cv, Destinations._ID + " = " + id, null);
+        cv.put(Destinations.COLUMN_NAME_ACTIVE, 0);
+        mDatabase.update(Destinations.TABLE_NAME, cv, Destinations._ID + " != " + id, null);
         c.close();
     }
 
