@@ -11,6 +11,10 @@ public class Destination {
     private float radius;
     private int active;
 
+    public Destination() {
+
+    }
+
     public Destination(Long id, String name, String coordinates, float radius, int active) {
         this.id = id;
         this.name = name;
