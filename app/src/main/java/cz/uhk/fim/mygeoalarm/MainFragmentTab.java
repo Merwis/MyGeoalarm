@@ -28,6 +28,7 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
     Destination activeDestination = new Destination();
     OnDestinationActivatedListener mListener;
     Button mBtnActivate;
+    Button mBtnDeactivate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mFragmentView = inflater.inflate(R.layout.fragment_main, container, false);
         mBtnActivate = (Button) mFragmentView.findViewById(R.id.destination_activate);
+        mBtnDeactivate = (Button) mFragmentView.findViewById(R.id.destination_deactivate);
 
         mBtnActivate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +49,13 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
                 mListener.onDestinationActivated(activeDestination);
             }
         });
+        mBtnDeactivate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onDestinationDeactivated();
+            }
+        });
+
         getData();
         updateView(mFragmentView);
         return mFragmentView;
@@ -64,11 +73,12 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
         mDatabase = mHelper.getReadableDatabase();
 
         String[] projection = new String[] {
-                Destinations._ID, Destinations.COLUMN_NAME_NAME, Destinations.COLUMN_NAME_COORDINATES, Destinations.COLUMN_NAME_RADIUS, Destinations.COLUMN_NAME_ACTIVE};
+                Destinations._ID, Destinations.COLUMN_NAME_NAME, Destinations.COLUMN_NAME_LONGITUDE, Destinations.COLUMN_NAME_LATITUDE, Destinations.COLUMN_NAME_RADIUS, Destinations.COLUMN_NAME_ACTIVE};
         Cursor c = mDatabase.query(Destinations.TABLE_NAME, projection, Destinations.COLUMN_NAME_ACTIVE + " = " + 1, null, null, null, null);
         int colId = c.getColumnIndex("_id");
         int colName = c.getColumnIndex("name");
-        int colCoordinates = c.getColumnIndex("coordinates");
+        int colLongitude = c.getColumnIndex("longitude");
+        int colLatitude = c.getColumnIndex("latitude");
         int colRadius = c.getColumnIndex("radius");
         c.moveToFirst();
         if (c.getCount() == 0) {
@@ -81,7 +91,8 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
 
             activeDestination.setId(c.getLong(colId));
             activeDestination.setName(c.getString(colName));
-            activeDestination.setCoordinates(c.getString(colCoordinates));
+            activeDestination.setLongitude(c.getString(colLongitude));
+            activeDestination.setLatitude(c.getString(colLatitude));
             activeDestination.setRadius(c.getFloat(colRadius));
 
             mBtnActivate.setVisibility(Button.VISIBLE);
@@ -103,6 +114,7 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
 
     public interface OnDestinationActivatedListener {
         public void onDestinationActivated(Destination destination);
+        public void onDestinationDeactivated();
     }
 
     @Override

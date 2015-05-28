@@ -7,7 +7,8 @@ public class Destination {
 
     private Long id;
     private String name;
-    private String coordinates;
+    private String longitude;
+    private String latitude;
     private float radius;
     private int active;
 
@@ -15,10 +16,11 @@ public class Destination {
 
     }
 
-    public Destination(Long id, String name, String coordinates, float radius, int active) {
+    public Destination(Long id, String name, String longitude, String latitude, float radius, int active) {
         this.id = id;
         this.name = name;
-        this.coordinates = coordinates;
+        this.longitude = longitude;
+        this.latitude = latitude;
         this.radius = radius;
         this.active = active;
     }
@@ -39,12 +41,20 @@ public class Destination {
         this.name = name;
     }
 
-    public String getCoordinates() {
-        return coordinates;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setCoordinates(String coordinates) {
-        this.coordinates = coordinates;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public float getRadius() {
