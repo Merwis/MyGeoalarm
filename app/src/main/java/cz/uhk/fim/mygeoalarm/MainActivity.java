@@ -5,8 +5,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -50,6 +53,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private SharedPreferences mSharedPreferences;
 
     private LocationRequest mLocationRequest;
+
+    private Uri audioUri;
+
+    private DestinationDatabaseHelper mHelper;
+    private SQLiteDatabase mDatabase;
 
 
 
@@ -108,6 +116,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (RESULT_OK == resultCode) {
+            audioUri = data.getData();
+            ContentValues cv = new ContentValues();
+            cv.put(AlarmSounds.COLUMN_NAME_URI, audioUri.toString());
+            mHelper = new DestinationDatabaseHelper(this);
+            mDatabase = mHelper.getWritableDatabase();
+            mDatabase.insert(AlarmSounds.TABLE_NAME, null, cv);
+            Log.d(TAG, "" + audioUri);
+        }
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -279,5 +300,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onDestinationDeactivated() {
         removeGeofences();
+    }
+
+    public boolean isGeofenceAdded() {
+        return mGeofenceAdded;
+    }
+
+    public Uri getAudioUri() {
+        return audioUri;
     }
 }

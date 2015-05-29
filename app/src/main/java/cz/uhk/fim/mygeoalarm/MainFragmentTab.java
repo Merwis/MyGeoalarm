@@ -2,10 +2,14 @@ package cz.uhk.fim.mygeoalarm;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +33,9 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
     OnDestinationActivatedListener mListener;
     Button mBtnActivate;
     Button mBtnDeactivate;
+    Button mBtnFile;
+
+    public static final String TAG = "Main Fragment Tab";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,17 +49,31 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
         mFragmentView = inflater.inflate(R.layout.fragment_main, container, false);
         mBtnActivate = (Button) mFragmentView.findViewById(R.id.destination_activate);
         mBtnDeactivate = (Button) mFragmentView.findViewById(R.id.destination_deactivate);
+        mBtnFile = (Button) mFragmentView.findViewById(R.id.file);
 
         mBtnActivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onDestinationActivated(activeDestination);
+                mBtnActivate.setVisibility(View.GONE);
+                mBtnDeactivate.setVisibility(View.VISIBLE);
             }
         });
         mBtnDeactivate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.onDestinationDeactivated();
+                mBtnDeactivate.setVisibility(View.GONE);
+                mBtnActivate.setVisibility(View.VISIBLE);
+
+            }
+        });
+        mBtnFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pickAudioIntent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickAudioIntent, 1);
+
             }
         });
 
@@ -73,7 +94,8 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
         mDatabase = mHelper.getReadableDatabase();
 
         String[] projection = new String[] {
-                Destinations._ID, Destinations.COLUMN_NAME_NAME, Destinations.COLUMN_NAME_LONGITUDE, Destinations.COLUMN_NAME_LATITUDE, Destinations.COLUMN_NAME_RADIUS, Destinations.COLUMN_NAME_ACTIVE};
+                Destinations._ID, Destinations.COLUMN_NAME_NAME, Destinations.COLUMN_NAME_LONGITUDE, Destinations.COLUMN_NAME_LATITUDE,
+                Destinations.COLUMN_NAME_RADIUS, Destinations.COLUMN_NAME_ACTIVE};
         Cursor c = mDatabase.query(Destinations.TABLE_NAME, projection, Destinations.COLUMN_NAME_ACTIVE + " = " + 1, null, null, null, null);
         int colId = c.getColumnIndex("_id");
         int colName = c.getColumnIndex("name");
@@ -110,6 +132,14 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
         } else {
             mDestinationRadius.setText(String.valueOf(destinationRadius));
         }
+
+        if (((MainActivity) getActivity()).isGeofenceAdded()) {
+            mBtnActivate.setVisibility(Button.INVISIBLE);
+            mBtnDeactivate.setVisibility(Button.VISIBLE);
+        } else {
+            mBtnDeactivate.setVisibility(Button.INVISIBLE);
+        }
+
     }
 
     public interface OnDestinationActivatedListener {
@@ -127,4 +157,5 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
 
         }
     }
+
 }

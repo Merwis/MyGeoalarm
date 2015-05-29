@@ -13,7 +13,7 @@ public class DestinationDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TAG = DestinationDatabaseHelper.class.getCanonicalName();
     public static final String DATABASE_NAME = "destinationdatabase.db";
-    public static final int VERSION = 6;
+    public static final int VERSION = 7;
 
     public static final String SQL_CREATE_DESTINATION_TABLE =
             "CREATE TABLE " + Destinations.TABLE_NAME + " (" +
@@ -27,6 +27,14 @@ public class DestinationDatabaseHelper extends SQLiteOpenHelper {
     public static final String SQL_DROP_DESTINATION_TABLE =
             "DROP TABLE IF EXISTS " + Destinations.TABLE_NAME;
 
+    public static final String SQL_CREATE_ALARMSOUNDS_TABLE =
+            "CREATE TABLE " + AlarmSounds.TABLE_NAME + " (" +
+                    AlarmSounds._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    AlarmSounds.COLUMN_NAME_URI + " TEXT)";
+
+    public static final String SQL_DROP_ALARMSOUNDS_TABLE =
+            "DROP TABLE IF EXISTS " + AlarmSounds.TABLE_NAME;
+
     public DestinationDatabaseHelper (Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
@@ -35,6 +43,7 @@ public class DestinationDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "Creating database");
         db.execSQL(SQL_CREATE_DESTINATION_TABLE);
+        db.execSQL(SQL_CREATE_ALARMSOUNDS_TABLE);
         fillDatabase(db);
     }
 
@@ -44,6 +53,7 @@ public class DestinationDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DROP_DESTINATION_TABLE);
         Log.d(TAG, "Creating database");
         db.execSQL(SQL_CREATE_DESTINATION_TABLE);
+        db.execSQL(SQL_CREATE_ALARMSOUNDS_TABLE);
         fillDatabase(db);
     }
 

@@ -8,9 +8,12 @@ import android.app.IntentService;
         import android.app.PendingIntent;
         import android.content.Context;
         import android.content.Intent;
-        import android.graphics.BitmapFactory;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
         import android.graphics.Color;
-        import android.support.v4.app.NotificationCompat;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
         import android.support.v4.app.TaskStackBuilder;
         import android.text.TextUtils;
         import android.util.Log;
@@ -27,6 +30,10 @@ import android.app.IntentService;
 public class GeofenceTransitionsIntentService extends IntentService {
 
     protected static final String TAG = "geofence-transitions-service";
+
+    DestinationDatabaseHelper mHelper;
+    SQLiteDatabase mDatabase;
+
 
     /**
      * This constructor is required, and calls the super IntentService(String)
@@ -78,7 +85,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
             Log.i(TAG, geofenceTransitionDetails);
         } else {
             // Log the error.
-            Log.e(TAG, "chyba2");
+           // Log.e(TAG, "chyba2");
         }
     }
 
@@ -131,6 +138,21 @@ public class GeofenceTransitionsIntentService extends IntentService {
         // Get a notification builder that's compatible with platform versions >= 4
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
+        Uri soundUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.sound);
+
+        mHelper = new DestinationDatabaseHelper(this);
+        mDatabase = mHelper.getReadableDatabase();
+
+        String[] projection = new String[] {
+                AlarmSounds.COLUMN_NAME_URI};
+        Cursor c = mDatabase.query(AlarmSounds.TABLE_NAME, projection, null, null, null, null, null);
+        int colName = c.getColumnIndex("uri");
+        c.moveToLast();
+        if (c.getCount() != 0) {
+            soundUri = Uri.parse(c.getString(colName));
+        }
+        c.close();
+
         // Define the notification settings.
         builder.setSmallIcon(R.drawable.ic_launcher)
                 // In a real app, you may want to use a library like Volley
@@ -140,7 +162,8 @@ public class GeofenceTransitionsIntentService extends IntentService {
                 .setColor(Color.RED)
                 .setContentTitle(notificationDetails)
                 .setContentText("textik")
-                .setContentIntent(notificationPendingIntent);
+                .setContentIntent(notificationPendingIntent)
+        .setSound(soundUri);
 
         // Dismiss notification once the user touches it.
         builder.setAutoCancel(true);
