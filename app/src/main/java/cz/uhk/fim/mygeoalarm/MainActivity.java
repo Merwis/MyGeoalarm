@@ -27,6 +27,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.GeofencingApi;
 import com.google.android.gms.maps.model.LatLng;
@@ -47,6 +48,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private PendingIntent mGeofencePendingIntent;
     private boolean mGeofenceAdded;
     private SharedPreferences mSharedPreferences;
+
+    private LocationRequest mLocationRequest;
 
 
 
@@ -103,6 +106,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         buildGoogleApiClient();
 
+
+
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -149,6 +154,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "Connected to GAC");
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, getGeofencePendingIntent());
     }
 
     @Override
@@ -249,7 +260,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         mGeofenceAdded = mSharedPreferences.getBoolean(String.valueOf(activeDestination.getId()), false);
 
         mGeofenceList.add(new Geofence.Builder()
-                        .setRequestId(String.valueOf(activeDestination.getId()))
+                        .setRequestId(String.valueOf(activeDestination.getName()))
                         .setCircularRegion(
                                 Double.parseDouble(activeDestination.getLatitude()),
                                 Double.parseDouble(activeDestination.getLongitude()),
@@ -259,8 +270,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                         .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
                         .build()
         );
-
+        Log.d(TAG, "" + activeDestination.getLatitude() + " " + activeDestination.getLongitude() + " " + activeDestination.getRadius());
         addGeofences();
+
 
     }
 

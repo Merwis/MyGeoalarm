@@ -13,7 +13,7 @@ public class DestinationDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String TAG = DestinationDatabaseHelper.class.getCanonicalName();
     public static final String DATABASE_NAME = "destinationdatabase.db";
-    public static final int VERSION = 5;
+    public static final int VERSION = 6;
 
     public static final String SQL_CREATE_DESTINATION_TABLE =
             "CREATE TABLE " + Destinations.TABLE_NAME + " (" +
@@ -57,8 +57,8 @@ public class DestinationDatabaseHelper extends SQLiteOpenHelper {
         db.insert(Destinations.TABLE_NAME, null, contentValues);
 
         contentValues.put(Destinations.COLUMN_NAME_NAME, "Nove Mesto");
-        contentValues.put(Destinations.COLUMN_NAME_LONGITUDE, "50.3603444");
-        contentValues.put(Destinations.COLUMN_NAME_LATITUDE, "16.1516458");
+        contentValues.put(Destinations.COLUMN_NAME_LONGITUDE, "16.1516458");
+        contentValues.put(Destinations.COLUMN_NAME_LATITUDE, "50.3603444");
         contentValues.put(Destinations.COLUMN_NAME_RADIUS, 1);
         contentValues.put(Destinations.COLUMN_NAME_ACTIVE, 0);
         db.insert(Destinations.TABLE_NAME, null, contentValues);

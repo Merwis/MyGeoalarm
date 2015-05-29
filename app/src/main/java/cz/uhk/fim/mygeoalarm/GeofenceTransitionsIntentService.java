@@ -26,7 +26,7 @@ import android.app.IntentService;
  */
 public class GeofenceTransitionsIntentService extends IntentService {
 
-    protected static final String TAG = "geofence-transition-ser";
+    protected static final String TAG = "geofence-transitions-service";
 
     /**
      * This constructor is required, and calls the super IntentService(String)
@@ -51,7 +51,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         if (geofencingEvent.hasError()) {
-            String errorMessage = "Chyba 1";
+            String errorMessage = "chyba1";
             Log.e(TAG, errorMessage);
             return;
         }
@@ -132,11 +132,11 @@ public class GeofenceTransitionsIntentService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         // Define the notification settings.
-        builder.setSmallIcon(R.drawable.common_signin_btn_icon_light)
+        builder.setSmallIcon(R.drawable.ic_launcher)
                 // In a real app, you may want to use a library like Volley
                 // to decode the Bitmap.
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
-                        R.drawable.abc_btn_check_material))
+                        R.drawable.ic_launcher))
                 .setColor(Color.RED)
                 .setContentTitle(notificationDetails)
                 .setContentText("textik")
@@ -164,9 +164,9 @@ public class GeofenceTransitionsIntentService extends IntentService {
             case Geofence.GEOFENCE_TRANSITION_ENTER:
                 return "vstoupeno";
             case Geofence.GEOFENCE_TRANSITION_EXIT:
-                return "opusteno";
+                return "odejito";
             default:
-                return "uvnitr";
+                return "neco";
         }
     }
 }
