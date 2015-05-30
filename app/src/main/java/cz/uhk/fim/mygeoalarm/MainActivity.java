@@ -59,6 +59,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private DestinationDatabaseHelper mHelper;
     private SQLiteDatabase mDatabase;
 
+    private boolean mGeofenceChange = false;
+    private boolean mDestinationSelected = false;
+
 
 
     public static final String TAG = "Main activity";
@@ -95,9 +98,18 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 android.support.v4.app.Fragment fragment =
                         ((FragmentPageAdapter) mViewPager.getAdapter()).getFragment(i);
 
+
+                if (i == 0 && mGeofenceChange == true && mGeofenceAdded == true && mDestinationSelected == true) {
+                    Log.d(TAG, "geofence change");
+                    removeGeofences();
+                    stopGpsUpdates();
+                    mGeofenceChange = false;
+                }
+
                 if (i == 0 && fragment != null) {
                     fragment.onResume();
                 }
+
             }
 
             @Override
@@ -175,12 +187,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "Connected to GAC");
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, getGeofencePendingIntent());
     }
 
     @Override
@@ -227,6 +233,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             LocationServices.GeofencingApi.addGeofences(
                     mGoogleApiClient, getGeofencingRequest(), getGeofencePendingIntent()
             ).setResultCallback(this);
+
+            mGeofenceAdded = true;
+
+            Toast.makeText(
+                    this,
+                    ("Geofence pridan"),
+                    Toast.LENGTH_SHORT
+            ).show();
         } catch (SecurityException e) {
 
         }
@@ -242,6 +256,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             LocationServices.GeofencingApi.removeGeofences(
                     mGoogleApiClient, getGeofencePendingIntent()
             ).setResultCallback(this);
+
+            mGeofenceAdded = false;
+
+            Toast.makeText(
+                    this,
+                    ("Geofence odstranen"),
+                    Toast.LENGTH_SHORT
+            ).show();
         } catch (SecurityException e) {
 
         }
@@ -250,16 +272,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onResult(Status status) {
         if (status.isSuccess()) {
-            mGeofenceAdded = !mGeofenceAdded;
+            /*mGeofenceAdded = !mGeofenceAdded;
             SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putBoolean(String.valueOf(activeDestination.getId()), mGeofenceAdded);
-            editor.commit();
+            editor.commit();*/
 
-            Toast.makeText(
-                    this,
-                    (mGeofenceAdded ? "Geofence pridan" : "Geofence odstranen"),
-                    Toast.LENGTH_SHORT
-            ).show();
         } else {
             Log.d(TAG, "Nekde je chyba");
         }
@@ -275,10 +292,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     @Override
     public void onDestinationActivated(Destination destination) {
+        startGpsUpdates();
         activeDestination = destination;
         Log.d(TAG, "created " + activeDestination.getName());
 
-        mGeofenceAdded = mSharedPreferences.getBoolean(String.valueOf(activeDestination.getId()), false);
+        //mGeofenceAdded = mSharedPreferences.getBoolean(String.valueOf(activeDestination.getId()), false);
 
         mGeofenceList.add(new Geofence.Builder()
                         .setRequestId(String.valueOf(activeDestination.getName()))
@@ -293,17 +311,37 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         );
         Log.d(TAG, "" + activeDestination.getLatitude() + " " + activeDestination.getLongitude() + " " + activeDestination.getRadius());
         addGeofences();
+   }
 
+    private void stopGpsUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,getGeofencePendingIntent());
+    }
 
+    private void startGpsUpdates() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, getGeofencePendingIntent());
     }
 
     @Override
     public void onDestinationDeactivated() {
+        stopGpsUpdates();
         removeGeofences();
     }
 
     public boolean isGeofenceAdded() {
         return mGeofenceAdded;
+    }
+
+    public void setGeofenceChange(boolean geofenceChange) {
+        mGeofenceChange = geofenceChange;
+    }
+
+    public void setDestinationSelected(boolean destinationSelected) {
+        mDestinationSelected = destinationSelected;
     }
 
     public Uri getAudioUri() {

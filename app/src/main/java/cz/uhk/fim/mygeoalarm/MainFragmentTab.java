@@ -107,6 +107,7 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
             destinationName = "No active destinations";
             destinationRadius = -1;
             mBtnActivate.setVisibility(Button.INVISIBLE);
+            ((MainActivity)getActivity()).setDestinationSelected(false);
         } else {
             destinationName = c.getString(colName);
             destinationRadius = c.getFloat(colRadius);
@@ -118,6 +119,7 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
             activeDestination.setRadius(c.getFloat(colRadius));
 
             mBtnActivate.setVisibility(Button.VISIBLE);
+            ((MainActivity)getActivity()).setDestinationSelected(true);
         }
         c.close();
     }
