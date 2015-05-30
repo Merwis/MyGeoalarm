@@ -20,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -62,6 +63,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private boolean mGeofenceChange = false;
     private boolean mDestinationSelected = false;
 
+    private Button mBtnOpenAddDestination;
+
 
 
     public static final String TAG = "Main activity";
@@ -70,11 +73,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mViewPager = new ViewPager(this);
-        mViewPager.setId(R.id.pager);
-        setContentView(mViewPager);
+        setContentView(R.layout.activity_main);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
 
-        mFragmentPageAdapter = new FragmentPageAdapter(getSupportFragmentManager(), this.getApplicationContext());
+        mFragmentPageAdapter = new FragmentPageAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mFragmentPageAdapter);
 
         final ActionBar actionBar = getActionBar();
@@ -126,7 +128,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         buildGoogleApiClient();
 
-
+        mBtnOpenAddDestination = (Button) findViewById(R.id.openAddDestination);
+        mBtnOpenAddDestination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddDestinationActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

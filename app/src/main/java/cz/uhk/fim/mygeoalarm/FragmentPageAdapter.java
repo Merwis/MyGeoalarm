@@ -18,13 +18,11 @@ public class FragmentPageAdapter extends FragmentPagerAdapter {
 
     private Map<Integer, String> mFragmentTags;
     private FragmentManager mFragmentManager;
-    private Context mContext;
 
-    public FragmentPageAdapter(FragmentManager fm, Context context) {
+    public FragmentPageAdapter(FragmentManager fm) {
         super(fm);
         mFragmentManager = fm;
         mFragmentTags = new HashMap<Integer, String>();
-        mContext = context;
     }
 
     @Override
