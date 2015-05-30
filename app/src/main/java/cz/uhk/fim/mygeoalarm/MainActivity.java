@@ -68,6 +68,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
 
     public static final String TAG = "Main activity";
+    public static final String SHARED_PREFERENCES = "GeoalarmSharedPreferences";
+    public static final String GEOFENCES_ADDED_KEY = "GeoalarmGeofencesAddedKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +125,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         mGeofencePendingIntent = null;
 
-        mSharedPreferences = getSharedPreferences("Preference", MODE_PRIVATE);
+        mSharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+
+        mGeofenceAdded = mSharedPreferences.getBoolean(GEOFENCES_ADDED_KEY, false);
 
 
         buildGoogleApiClient();
@@ -265,7 +269,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             LocationServices.GeofencingApi.removeGeofences(
                     mGoogleApiClient, getGeofencePendingIntent()
             ).setResultCallback(this);
-
+            Log.d(TAG, "geofence odstranen");
             mGeofenceAdded = false;
 
             Toast.makeText(
@@ -281,10 +285,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onResult(Status status) {
         if (status.isSuccess()) {
-            /*mGeofenceAdded = !mGeofenceAdded;
             SharedPreferences.Editor editor = mSharedPreferences.edit();
-            editor.putBoolean(String.valueOf(activeDestination.getId()), mGeofenceAdded);
-            editor.commit();*/
+            editor.putBoolean(GEOFENCES_ADDED_KEY, mGeofenceAdded);
+            editor.commit();
 
         } else {
             Log.d(TAG, "Nekde je chyba");

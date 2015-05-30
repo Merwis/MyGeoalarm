@@ -20,8 +20,9 @@ import android.support.v4.app.NotificationCompat;
 
         import com.google.android.gms.location.Geofence;
         import com.google.android.gms.location.GeofencingEvent;
+import com.google.android.gms.location.LocationServices;
 
-        import java.util.ArrayList;
+import java.util.ArrayList;
         import java.util.List;
 
 /**
@@ -72,6 +73,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
             // Get the geofences that were triggered. A single event can trigger multiple geofences.
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
+
 
             // Get the transition details as a String.
             String geofenceTransitionDetails = getGeofenceTransitionDetails(
@@ -174,6 +176,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
         // Issue the notification
         mNotificationManager.notify(0, builder.build());
+
     }
 
     /**
