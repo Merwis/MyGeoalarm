@@ -33,7 +33,6 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
     OnDestinationActivatedListener mListener;
     Button mBtnActivate;
     Button mBtnDeactivate;
-    Button mBtnFile;
 
     public static final String TAG = "Main Fragment Tab";
 
@@ -49,7 +48,6 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
         mFragmentView = inflater.inflate(R.layout.fragment_main, container, false);
         mBtnActivate = (Button) mFragmentView.findViewById(R.id.destination_activate);
         mBtnDeactivate = (Button) mFragmentView.findViewById(R.id.destination_deactivate);
-        mBtnFile = (Button) mFragmentView.findViewById(R.id.file);
 
         mBtnActivate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,14 +63,6 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
                 mListener.onDestinationDeactivated();
                 mBtnDeactivate.setVisibility(View.GONE);
                 mBtnActivate.setVisibility(View.VISIBLE);
-
-            }
-        });
-        mBtnFile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pickAudioIntent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickAudioIntent, 1);
 
             }
         });

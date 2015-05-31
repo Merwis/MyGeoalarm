@@ -79,5 +79,7 @@ public class DestinationDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(Destinations.COLUMN_NAME_RADIUS, 2);
         contentValues.put(Destinations.COLUMN_NAME_ACTIVE, 0);
         db.insert(Destinations.TABLE_NAME, null, contentValues);
+
+        db.close();
     }
 }

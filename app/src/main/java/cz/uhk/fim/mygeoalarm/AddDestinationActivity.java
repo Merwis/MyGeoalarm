@@ -58,6 +58,8 @@ public class AddDestinationActivity extends Activity {
 
                     mDatabase.insert(Destinations.TABLE_NAME, null, contentValues);
 
+                    mDatabase.close();
+
                     getBack();
                 }
             }

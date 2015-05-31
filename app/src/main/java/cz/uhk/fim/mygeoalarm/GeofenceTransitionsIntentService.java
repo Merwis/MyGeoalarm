@@ -150,9 +150,14 @@ public class GeofenceTransitionsIntentService extends IntentService {
         Cursor c = mDatabase.query(AlarmSounds.TABLE_NAME, projection, null, null, null, null, null);
         int colName = c.getColumnIndex("uri");
         c.moveToLast();
-        if (c.getCount() != 0) {
-            soundUri = Uri.parse(c.getString(colName));
+        try {
+            if (c.getCount() != 0) {
+                soundUri = Uri.parse(c.getString(colName));
+            }
+        } catch (SecurityException e) {
+
         }
+
         c.close();
 
         // Define the notification settings.

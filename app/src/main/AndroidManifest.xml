@@ -23,6 +23,10 @@
             android:name=".AddDestinationActivity"
             android:label="Add destination"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity" />
         <service
             android:name=".GeofenceTransitionsIntentService" />
 

@@ -55,11 +55,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     private LocationRequest mLocationRequest;
 
-    private Uri audioUri;
-
-    private DestinationDatabaseHelper mHelper;
-    private SQLiteDatabase mDatabase;
-
     private boolean mGeofenceChange = false;
     private boolean mDestinationSelected = false;
 
@@ -143,19 +138,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (RESULT_OK == resultCode) {
-            audioUri = data.getData();
-            ContentValues cv = new ContentValues();
-            cv.put(AlarmSounds.COLUMN_NAME_URI, audioUri.toString());
-            mHelper = new DestinationDatabaseHelper(this);
-            mDatabase = mHelper.getWritableDatabase();
-            mDatabase.insert(AlarmSounds.TABLE_NAME, null, cv);
-            Log.d(TAG, "" + audioUri);
-        }
-    }
-
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -175,9 +157,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_destination:
-                Intent intent = new Intent(this, AddDestinationActivity.class);
-                startActivity(intent);
+                Intent intentDestination = new Intent(this, AddDestinationActivity.class);
+                startActivity(intentDestination);
                 return true;
+            case R.id.action_settings:
+                Intent intentSettings = new Intent(this, SettingsActivity.class);
+                startActivity(intentSettings);
             default: return super.onOptionsItemSelected(item);
         }
     }
@@ -356,7 +341,4 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         mDestinationSelected = destinationSelected;
     }
 
-    public Uri getAudioUri() {
-        return audioUri;
-    }
 }
