@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selected destination"
+        android:text="@string/selected_destination"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
         />
@@ -39,7 +39,7 @@
         android:id="@+id/destination_activate"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:text="ACTIVATE"
+        android:text="@string/activate"
         />
     <Button
         android:layout_width="wrap_content"
@@ -47,6 +47,6 @@
         android:id="@+id/destination_deactivate"
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
-        android:text="DEACTIVATE"
+        android:text="@string/deactivate"
         />
 </LinearLayout>
