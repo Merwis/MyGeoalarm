@@ -25,8 +25,8 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
     DestinationDatabaseHelper mHelper;
     SimpleCursorAdapter mAdapter;
     SQLiteDatabase mDatabase;
-    TextView mDestinationName, mDestinationRadius;
-    String destinationName;
+    TextView mDestinationName, mDestinationRadius, mDestinationCoordinates;
+    String destinationName, destinationCoordinates;
     float destinationRadius;
     View mFragmentView;
     Destination activeDestination = new Destination();
@@ -94,7 +94,8 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
         int colRadius = c.getColumnIndex("radius");
         c.moveToFirst();
         if (c.getCount() == 0) {
-            destinationName = "No active destinations";
+            destinationName = "No selected destinations.";
+            destinationCoordinates = "Select one from Destinations tab.";
             destinationRadius = -1;
             mBtnActivate.setVisibility(Button.INVISIBLE);
             ((MainActivity)getActivity()).setDestinationSelected(false);
@@ -117,12 +118,16 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
     private void updateView(View view) {
         mDestinationName = (TextView) view.findViewById(R.id.destination_name);
         mDestinationRadius = (TextView) view.findViewById(R.id.destination_radius);
+        mDestinationCoordinates = (TextView) view.findViewById(R.id.destination_coordinates);
 
         mDestinationName.setText(destinationName);
+
         if (destinationRadius == -1) {
+            mDestinationCoordinates.setText(destinationCoordinates);
             mDestinationRadius.setText("");
         } else {
-            mDestinationRadius.setText(String.valueOf(destinationRadius));
+            mDestinationCoordinates.setText(activeDestination.getLatitude() + " | " + activeDestination.getLongitude());
+            mDestinationRadius.setText("Activation radius: " + String.valueOf(destinationRadius) + " km");
         }
 
         if (((MainActivity) getActivity()).isGeofenceAdded()) {

@@ -168,9 +168,10 @@ public class GeofenceTransitionsIntentService extends IntentService {
                         R.drawable.ic_launcher))
                 .setColor(Color.RED)
                 .setContentTitle(notificationDetails)
-                .setContentText("textik")
+                .setContentText("Geofence status changed")
                 .setContentIntent(notificationPendingIntent)
-        .setSound(soundUri);
+                .setSound(soundUri)
+                .setVibrate(new long[] {1000, 500, 1000, 500, 1000, 500, 1000});
 
         // Dismiss notification once the user touches it.
         builder.setAutoCancel(true);
@@ -193,11 +194,11 @@ public class GeofenceTransitionsIntentService extends IntentService {
     private String getTransitionString(int transitionType) {
         switch (transitionType) {
             case Geofence.GEOFENCE_TRANSITION_ENTER:
-                return "vstoupeno";
+                return "You entered";
             case Geofence.GEOFENCE_TRANSITION_EXIT:
-                return "odejito";
+                return "You left";
             default:
-                return "neco";
+                return "You are in desired area";
         }
     }
 }

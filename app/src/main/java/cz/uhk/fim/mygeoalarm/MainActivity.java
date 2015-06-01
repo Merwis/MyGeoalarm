@@ -43,7 +43,6 @@ import java.util.ArrayList;
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener,
         ConnectionCallbacks, OnConnectionFailedListener, ResultCallback<Status>, MainFragmentTab.OnDestinationActivatedListener  {
 
-    ActionBar mActionBar;
     ViewPager mViewPager;
     FragmentPageAdapter mFragmentPageAdapter;
     GoogleApiClient mGoogleApiClient;
@@ -246,7 +245,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
             Toast.makeText(
                     this,
-                    ("Geofence pridan"),
+                    ("Geoalarm activated"),
                     Toast.LENGTH_SHORT
             ).show();
         } catch (SecurityException e) {
@@ -264,12 +263,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             LocationServices.GeofencingApi.removeGeofences(
                     mGoogleApiClient, getGeofencePendingIntent()
             ).setResultCallback(this);
-            Log.d(TAG, "geofence odstranen");
+            Log.d(TAG, "Geofence deactivated");
             mGeofenceAdded = false;
 
             Toast.makeText(
                     this,
-                    ("Geofence odstranen"),
+                    ("Geoalarm deactivated"),
                     Toast.LENGTH_SHORT
             ).show();
         } catch (SecurityException e) {
@@ -302,8 +301,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         startGpsUpdates();
         activeDestination = destination;
         Log.d(TAG, "created " + activeDestination.getName());
-
-        //mGeofenceAdded = mSharedPreferences.getBoolean(String.valueOf(activeDestination.getId()), false);
 
         mGeofenceList.add(new Geofence.Builder()
                         .setRequestId(String.valueOf(activeDestination.getName()))

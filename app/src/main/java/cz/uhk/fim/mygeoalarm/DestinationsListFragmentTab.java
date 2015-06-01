@@ -1,13 +1,9 @@
 package cz.uhk.fim.mygeoalarm;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.ListFragment;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -39,7 +35,7 @@ public class DestinationsListFragmentTab extends android.support.v4.app.ListFrag
         mDatabase = mHelper.getWritableDatabase();
 
         String[] projection = new String[] {
-                Destinations._ID, Destinations.COLUMN_NAME_NAME, Destinations.COLUMN_NAME_RADIUS};
+                Destinations._ID, Destinations.COLUMN_NAME_NAME, Destinations.COLUMN_NAME_RADIUS, Destinations.COLUMN_NAME_ACTIVE};
 
         Cursor c = mDatabase.query(Destinations.TABLE_NAME, projection, null, null, null, null, null);
 
@@ -133,9 +129,7 @@ public class DestinationsListFragmentTab extends android.support.v4.app.ListFrag
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-     //   mCallback.OnDestinationSelected(position);
 
-        Long destinationID = mAdapter.getItemId(position);
         String[] select = new String[] {Destinations._ID, Destinations.COLUMN_NAME_ACTIVE};
 
         Cursor c = mDatabase.query(Destinations.TABLE_NAME, select, Destinations._ID + "=" + id, null, null, null, null );
