@@ -15,7 +15,7 @@ import android.widget.EditText;
 public class AddDestinationActivity extends Activity {
 
     EditText mEtDestinationName, mEtDestinationLongitude, mEtDestinationLatitude, mEtDestinationRadius;
-    Button mSaveButton;
+    Button mSaveButton, mOpenMapButton;
 
     DestinationDatabaseHelper mHelper;
     SQLiteDatabase mDatabase;
@@ -30,7 +30,16 @@ public class AddDestinationActivity extends Activity {
         mEtDestinationLatitude = (EditText) findViewById(R.id.addDestinationLatitude);
         mEtDestinationRadius = (EditText) findViewById(R.id.addDestinationRadius);
 
+        if (getIntent().getExtras() != null) {
+            Bundle b = getIntent().getExtras();
+            mEtDestinationLongitude.setText(b.getString("longitude"));
+            mEtDestinationLatitude.setText(b.getString("latitude"));
+            mEtDestinationName.setText(b.getString("name"));
+            mEtDestinationRadius.setText(b.getString("radius"));
+        }
+
         mSaveButton = (Button) findViewById(R.id.addDestinationSave);
+        mOpenMapButton = (Button) findViewById(R.id.openMap);
 
         mHelper = new DestinationDatabaseHelper(this);
         mDatabase = mHelper.getWritableDatabase();
@@ -62,6 +71,20 @@ public class AddDestinationActivity extends Activity {
 
                     getBack();
                 }
+            }
+        });
+
+        mOpenMapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AddDestinationActivity.this, MapActivity.class);
+                Bundle b = new Bundle();
+                b.putString("name", mEtDestinationName.getText().toString());
+                b.putString("radius", mEtDestinationRadius.getText().toString());
+                b.putString("longitude", mEtDestinationLongitude.getText().toString());
+                b.putString("latitude", mEtDestinationLatitude.getText().toString());
+                intent.putExtras(b);
+                startActivity(intent);
             }
         });
     }
