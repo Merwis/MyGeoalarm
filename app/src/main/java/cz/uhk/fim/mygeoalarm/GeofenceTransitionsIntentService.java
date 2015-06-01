@@ -168,7 +168,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
                         R.drawable.ic_launcher))
                 .setColor(Color.RED)
                 .setContentTitle(notificationDetails)
-                .setContentText("Geofence status changed")
+                .setContentText("Geoalarm status changed")
                 .setContentIntent(notificationPendingIntent)
                 .setSound(soundUri)
                 .setVibrate(new long[] {1000, 500, 1000, 500, 1000, 500, 1000});

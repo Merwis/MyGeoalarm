@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 /**
@@ -26,6 +27,7 @@ public class SettingsActivity extends Activity {
     SQLiteDatabase mDatabase;
     Uri audioUri;
     TextView mSongName;
+    SimpleCursorAdapter mAdapter;
 
     private SharedPreferences mSharedPreferences;
 
@@ -84,6 +86,7 @@ public class SettingsActivity extends Activity {
             editor.commit();
             mSongName.setText(mSharedPreferences.getString(SONG_ADDED_KEY, "Default song"));
 
+
             refresh();
         }
     }
@@ -91,6 +94,12 @@ public class SettingsActivity extends Activity {
     private void refresh() {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

@@ -113,6 +113,7 @@ public class MainFragmentTab extends android.support.v4.app.Fragment {
             ((MainActivity)getActivity()).setDestinationSelected(true);
         }
         c.close();
+        mHelper.close();
     }
 
     private void updateView(View view) {
