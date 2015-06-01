@@ -2,11 +2,13 @@ package cz.uhk.fim.mygeoalarm;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,9 +25,14 @@ public class MapActivity extends Activity implements OnMapReadyCallback{
     MarkerOptions mMarker;
     Button mAddCoordinatesButton;
     LatLng mLatLng, mOldLatLng;
-    String mName, mLongitude, mLatitude, mRadius;
+    String mName, mLongitude, mLatitude, mRadius, mLastKnownLongitude, mLastKnownLatitude;
+    SharedPreferences mSharedPreferences;
+
 
     public static final String TAG = "MapActivity";
+    public static final String SHARED_PREFERENCES = "GeoalarmSharedPreferences";
+    public static final String LAST_KNOWN_LONGITUDE_ADDED_KEY = "GeoalarmLongitudeAddedKey";
+    public static final String LAST_KNOWN_LATITUDE_ADDED_KEY = "GeoalarmLatitudeAddedKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,10 @@ public class MapActivity extends Activity implements OnMapReadyCallback{
                 startActivity(intent);
             }
         });
+
+        mSharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        mLastKnownLongitude = mSharedPreferences.getString(LAST_KNOWN_LONGITUDE_ADDED_KEY, "");
+        mLastKnownLatitude = mSharedPreferences.getString(LAST_KNOWN_LATITUDE_ADDED_KEY, "");
     }
 
     @Override
@@ -74,6 +85,12 @@ public class MapActivity extends Activity implements OnMapReadyCallback{
             mMarker = new MarkerOptions().position(mOldLatLng).title(mName);
             mLatLng = mOldLatLng;
             googleMap.addMarker(mMarker);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 8f));
+        } else if (!mLastKnownLongitude.isEmpty() && !mLastKnownLatitude.isEmpty()) {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(Double.parseDouble(mLastKnownLatitude),
+                            Double.parseDouble(mLastKnownLongitude)),
+                    8f));
         }
 
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {

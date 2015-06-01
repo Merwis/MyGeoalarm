@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -65,6 +66,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static final String TAG = "Main activity";
     public static final String SHARED_PREFERENCES = "GeoalarmSharedPreferences";
     public static final String GEOFENCES_ADDED_KEY = "GeoalarmGeofencesAddedKey";
+    public static final String LAST_KNOWN_LONGITUDE_ADDED_KEY = "GeoalarmLongitudeAddedKey";
+    public static final String LAST_KNOWN_LATITUDE_ADDED_KEY = "GeoalarmLatitudeAddedKey";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,6 +188,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "Connected to GAC");
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
+            editor.putString(LAST_KNOWN_LONGITUDE_ADDED_KEY, mLastLocation.getLongitude() + "");
+            editor.putString(LAST_KNOWN_LATITUDE_ADDED_KEY, mLastLocation.getLatitude() + "");
+            editor.commit();
+        }
     }
 
     @Override
