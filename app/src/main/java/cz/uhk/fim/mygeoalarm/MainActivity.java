@@ -318,7 +318,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
    }
 
     private void stopGpsUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient,getGeofencePendingIntent());
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, getGeofencePendingIntent());
     }
 
     private void startGpsUpdates() {

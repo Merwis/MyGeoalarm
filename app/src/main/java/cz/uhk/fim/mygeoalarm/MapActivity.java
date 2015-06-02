@@ -57,6 +57,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback{
         mMapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mMapFragment.getMapAsync(this);
         mAddCoordinatesButton = (Button) findViewById(R.id.addGpsCoordinates);
+        mAddCoordinatesButton.setEnabled(false);
         mAddCoordinatesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +87,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback{
             mLatLng = mOldLatLng;
             googleMap.addMarker(mMarker);
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 8f));
+            mAddCoordinatesButton.setEnabled(true);
         } else if (!mLastKnownLongitude.isEmpty() && !mLastKnownLatitude.isEmpty()) {
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(Double.parseDouble(mLastKnownLatitude),
@@ -96,7 +98,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback{
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-
+                mAddCoordinatesButton.setEnabled(true);
                 mLatLng = latLng;
                 if (mMarker == null) {
                     mMarker = new MarkerOptions().position(latLng).title(mName);
