@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Petr on 27. 5. 2015.
+ * Most of the code taken from an example code on github https://github.com/googlesamples/android-play-location/tree/master/Geofencing
  */
 public class GeofenceTransitionsIntentService extends IntentService {
 
